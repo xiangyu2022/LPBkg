@@ -33,9 +33,9 @@ from scipy import stats
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-ca=np.loadtxt('L:\\R code and tutorial\\source_free.txt',dtype=str)[:,1:].astype(float)
-bk=np.loadtxt('L:\\R code and tutorial\\background.txt',dtype=str)[:,1:].astype(float)
-si=np.loadtxt('L:\\R code and tutorial\\signal.txt',dtype=str)[:,1:].astype(float)
+ca=np.loadtxt('D:\\data\\source_free.txt',dtype=str)[:,1:].astype(float)
+bk=np.loadtxt('D:\\data\\background.txt',dtype=str)[:,1:].astype(float)
+si=np.loadtxt('D:\\data\\signal.txt',dtype=str)[:,1:].astype(float)
 ```
 
 To make these data matrix become numpy arrays for further use, we could reshape them as follows:
