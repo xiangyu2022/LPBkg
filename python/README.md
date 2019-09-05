@@ -4,7 +4,8 @@ This package provides a python implemention for the **New Signals Detection Unde
 
 Further details and theory about the algorithm can be found here [[PDF](https://arxiv.org/pdf/1906.06615.pdf)]
 
-For more questions and references, please contact the author Xiangyu Zhang at zhan6004@umn.edu
+For more technial problems, please contact the author Xiangyu Zhang at zhan6004@umn.edu.
+For more theoretical references, please contact Sara Algeri at salgeri@umn.edu
 
 ## A quick Setup Guide
 
