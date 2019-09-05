@@ -11,7 +11,7 @@ setup(
     description='Detecting new signals under background mismodelling.',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='',
+    url='https://github.com/Yorkee2018/LPBkg/tree/master/python',
     author = 'Xiangyu Zhang, Sara Algeri',
     author_email="zhan6004@umn.edu, salgeri@umn.edu",
     packages = ['LPBkg'],
