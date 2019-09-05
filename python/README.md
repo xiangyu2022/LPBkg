@@ -16,7 +16,7 @@ python -m pip install LPBkg
 ```
 #### 2. Loading packages and main functions
 ```bash
-from LPBkg.LPBkg.detc import BestM, dhatL2
+from LPBkg.detc import BestM, dhatL2
 ```
 
 ## Tutorial and Examples
