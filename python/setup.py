@@ -7,7 +7,7 @@ with open(join(dirname(realpath(__file__)), "README.md")) as f:
 
 setup(
     name = 'LPBkg',
-    version = '0.0.1',
+    version = '0.0.2',
     description='Detecting new signals under background mismodelling.',
     long_description=long_description,
     long_description_content_type='text/markdown',
