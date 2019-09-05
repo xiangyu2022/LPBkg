@@ -77,7 +77,7 @@ Let's chek how our postulated model fits the data
 
 ```dash
 fig, ax = plt.subplots(figsize=(14, 7))
-ax=sns.displot(cal, kde=False, norm_hist= True)
+ax=sns.distplot(cal, kde=False, norm_hist= True)
 uu=np.arange(min(cal),max(cal),0.05)
 ax.plot(uu,powerlaw(uu),color='red',linestyle='dashed')
 ax.set_xbound(lower=1,upper=15)
@@ -128,7 +128,7 @@ The arguments of this function are the following:
 
 Let's now see what we get when applying this function to our source-free sample.  We consider the full solution (i.e., we do not apply any denoising criterion), but we must specify that the selected value Mmax=4 was choosen from a pool of M=20 candidates.
 ```dash
-comp = dhatL2(data=cal,g=powerlaw, M=4, Mmax=20, smooth=FALSE,hist_u=TRUE, breaks=20,ylim=[0,2.5],rg=[1,35],sigma=2)
+comp = dhatL2(data=cal,g=powerlaw, M=4, Mmax=20, smooth=False, hist_u=True, breaks=20,ylim=[0,2.5],rg=[1,35],sigma=2)
 ```
 
 Now let's take a look at the values contained in the **comp.density** object. We can extract the value of the deviance test statistics, its unadjusted and adjusted p-values using the following instructions:
