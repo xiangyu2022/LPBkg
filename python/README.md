@@ -33,6 +33,7 @@ from scipy import stats
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+# You can change to your own path to find these txt files respectively.
 ca=np.loadtxt('D:\\data\\source_free.txt',dtype=str)[:,1:].astype(float)
 bk=np.loadtxt('D:\\data\\background.txt',dtype=str)[:,1:].astype(float)
 si=np.loadtxt('D:\\data\\signal.txt',dtype=str)[:,1:].astype(float)
