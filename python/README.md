@@ -17,7 +17,7 @@ For more theoretical references, please contact the paper author Sara Algeri at 
 python -m pip install LPBkg
 ```
 #### 2. Loading packages and main functions
-```bash
+```python
 from LPBkg.detc import BestM, dhatL2
 ```
 
@@ -27,7 +27,7 @@ Now everything is ready to start our analysis. We consider the Fermi-LAT example
 
 The datafiles are available in the folder [[data](https://drive.google.com/open?id=1FYfqDpo4O-CHqVMOaQsTcTu9fbFeca62)] and can be loaded as follows:
 
-```bash
+```python
 import numpy as np
 from scipy import stats
 import seaborn as sns
@@ -40,7 +40,7 @@ si=np.loadtxt('D:\\data\\signal.txt',dtype=str)[:,1:].astype(float)
 ```
 
 To make these data matrix become numpy arrays for further use, we could reshape them as follows:
-```bash
+```python
 cal=ca.reshape(1,len(ca))[0]
 bkg=bk.reshape(1,len(bk))[0]
 sig=si.reshape(1,len(si))[0]
@@ -49,7 +49,7 @@ sig=si.reshape(1,len(si))[0]
 Now, we have stored our source-free sample into the object **cal**, whereas our background and signal physics samples are stored in the objects **bkg** and **sig**, respectively.
 We can check the number of observations in each sample and plot their histograms and kernel density estimation as follows:
 
-```bash
+```python
 len(cal)
 len(bkg)
 len(sig)
@@ -63,7 +63,7 @@ sns.distplot(sig, kde=True, norm_hist= True)
 
 Now we fit the source free data with a power-law (also known as Pareto type I) over the range [1,35]. This is going to be our postulated background model g_b.
 
-```bash
+```python
 #This is -loglikelihhod:
 def mll(d, y): 
   return -np.sum(np.log(stats.pareto.pdf(y,1,d)/stats.pareto.cdf(35,1,d)))
@@ -76,7 +76,7 @@ def powerlaw(y):
 
 Let's check how our postulated model fits the data
 
-```dash
+```python
 fig, ax = plt.subplots(figsize=(14, 7))
 ax=sns.distplot(cal, kde=False, norm_hist= True)
 uu=np.arange(min(cal),max(cal),0.05)
@@ -91,7 +91,7 @@ In order to assess if g_b is a good model for our background distribution we pro
 ## Choice of M
 
 First of all, we can select a suitable value of M (i.e., the number of polynomial terms which will contribute to our estimator) by means of the function bestM, i.e.,
-```bash
+```python
 BestM(data,g, Mmax=20,rg=[-10**7,10**7])
 ```
 The arguments of this function are the following:
@@ -102,14 +102,14 @@ The arguments of this function are the following:
 
 Let's now see what we obtain when applying this function to our source-free sample, while considering the best our fitted power law as postulated background model.
 
-```dash
+```python
 BestM(data=cal,g=powerlaw, Mmax=20,rg=[1,35])
 ```
 The largest significance is achieved at M=4 with a p-value of 9.383e-59.
 
 ## CD-plots and deviance tests
 We can now proceed constructing our CD-plot and deviance test by means of the function dhatL2 below
-```dash
+```python
 dhatL2(data,g, M=6, Mmax=1,smooth=FALSE,criterion="AIC",
        hist.u=TRUE,breaks=20,ylim=[0, 2.5],rg=[-10**7, 10**7],sigma=2)
 ```
@@ -128,19 +128,19 @@ The arguments of this function are the following:
 - sigma: the significance level at which the confidence bands should be constructed. Notice that if Mmax>1 or smooth=TRUE, Bonferroni's correction is automatically implemented. The default value of sigma is **2**.
 
 Let's now see what we get when applying this function to our source-free sample.  We consider the full solution (i.e., we do not apply any denoising criterion), but we must specify that the selected value Mmax=4 was choosen from a pool of M=20 candidates.
-```dash
+```python
 comp = dhatL2(data=cal,g=powerlaw, M=4, Mmax=20, smooth=False, hist_u=True, breaks=20,ylim=[0,2.5],rg=[1,35],sigma=2)
 ```
 
 Now let's take a look at the values contained in the **comp.density** object. We can extract the value of the deviance test statistics, its unadjusted and adjusted p-values using the following instructions:
-```dash
+```python
 comp['Deviance']
 comp.density['Dev_pvalue']
 comp.density['Dev_adj_pvalue']
 ```
 Furthermore, we can create new functions corresponding to the estimated comparison density in both the u and the x scale and plot them in order to understand where the most prominent departures occur.
 
-```dash
+```python
 # Estimated comparison density in u scale.
 fig, ax = plt.subplots(figsize=(14, 7))
 u=np.arange(0, 1, 0.001)
@@ -156,7 +156,7 @@ ax.set_title('Comparison density on u−scale', size=20)
 ax.figure
 ```
 
-```dash
+```python
 # Estimated comparison density in x scale.
 fig, ax = plt.subplots(figsize=(14, 7))
 u=np.arange(min(cal),max(cal),0.05)
@@ -173,7 +173,7 @@ ax.figure
 ```
 
 Similarly, we can define a new function corresponding to the estimate of f_b(x) and see how its fit compares to the histogram of the data.
-```dash
+```python
 fig, ax = plt.subplots(figsize=(14, 7))
 fb_hat = comp['f']
 ax=sns.distplot(cal,bins=30,kde=False,norm_hist=True)
@@ -213,7 +213,7 @@ We can assess if our physics sample provides evidence in favour of the signal us
 
 Below we work on the signal sample and we compare its distribution with the background distribution calibrated as describe in the previous section and which we called fb_hat. This is the equivalent of f^_b(x) in (14) of **Algeri (2019)**.  
 
-```dash
+```python
 fb_hat=comp['f']
 fig, ax = plt.subplots(figsize=(14, 7))
 ax=sns.distplot(cal,bins=30,kde=False,norm_hist=True)
@@ -230,12 +230,12 @@ ax.figure
 ```
 
 We select the value M which leads to the strongest significance. Notice that now we must specify fb_hat in the argument g.
-```dash
+```python
 BestM(data=sig,g=fb_hat, Mmax=20, rg=[1,35])
 ```
 The selection process based on the deviance test suggests M=3, which we now use to to estimate the comparison density using the dhatL2 function.
 
-```dash
+```python
 comp_sig=dhatL2(data=sig,g=fb_hat, M=3, Mmax=20, smooth=False,hist_u=True,
                          breaks=20,ylim=[0,2.5],rg=[1,35],sigma=2)
 adjusted_pvalue=comp_sig['Dev_adj_pvalue']
@@ -247,7 +247,7 @@ sigma_significance
 The CD-plot and the deviance test suggest that a signal is present in the region [2, 3.5] with 3.317 sigma significance.
 
 We can further explore the comparison density by plotting it on the $x$-domain and focusing on the [1,5] region. 
-```dash
+```python
 fig, ax = plt.subplots(figsize=(14, 7))
 u=np.arange(min(sig),max(sig),0.05)
 dhat_x= np.zeros(len(u))
@@ -265,7 +265,7 @@ ax.figure
 It seems like the signal is concentrated between 2 and 3.
 
 Furthermore, we can try repeating the same analysis with a larger basis, say M=6. Here we can set Mmax=1 since we are not doing any model selection, we are just picking M=6.
-```dash
+```python
 comp_sig2=dhatL2(data=sig,g=fb_hat, M=6, Mmax=1, smooth=False,hist_u=True,
                      breaks=20,ylim=[0,2.5],rg=[1,35],sigma=2)
 comp_sig2['Dev_adj_pvalue']
@@ -280,7 +280,7 @@ Since no selection process was considered, no adjusted p-value is returned and t
 Notice that, that despite no correction was applied the confidence bands are much larger than before but the estimated comparison density is somehow more concentrated around u=0.7. That is simply because a larger basis leads to a reduction of the bias and an increment of the variance. But what do we get if we implement  a denoising process?
 To do so we only need to specify smooth=TRUE and select a denoising criterion between AIC or BIC. Just for the sake of consistency with  **Algeri (2019)**, we choose the AIC criterion.
 
-```dash
+```python
 comp_sig3=dhatL2(data=sig,g=fb_hat, M=6, Mmax=1, smooth=True,
                      method="AIC",hist_u=True,breaks=20,
                      ylim=[0,2.5],rg=[1,35],sigma=2)
