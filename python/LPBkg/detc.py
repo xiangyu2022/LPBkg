@@ -9,24 +9,21 @@ from matplotlib.patches import Polygon
 from scipy.interpolate import interp1d
 import seaborn as sns
 
-a=np.loadtxt('D:\\R code and tutorial\\source_free1.txt',dtype=str)[:,1:].astype(float)
-b=np.loadtxt('D:\\R code and tutorial\\background1.txt',dtype=str)[:,1:].astype(float)
-c=np.loadtxt('D:\\R code and tutorial\\signal1.txt',dtype=str)[:,1:].astype(float)
 
-cal=a.reshape(1,len(a))[0]
-bkg=b.reshape(1,len(b))[0]
-sig=c.reshape(1,len(c))[0]
-#hist_cal=sns.distplot(cal,kde=True,norm_hist=True)
-#hist_bkg=sns.distplot(bkg,kde=True,norm_hist=True)
-#hist_sig=sns.distplot(sig,kde=True,norm_hist=True)
-#
-#import warnings
-#warnings.filterwarnings("ignore")
+'''
+slegendre_polynomials:
 
-def powerlaw(y):
-    return stats.pareto.pdf(y,1.40166,scale=1)/stats.pareto.cdf(35,1.40166,scale=1)
+Description:
+Return the normalized shifted Legendre polynomials according to the given value.
 
+Arguments:
 
+m	
+The size of the basis to be considered.
+
+Value:
+Numerical values of the m+1 normalized shifted Legendre polynomials.
+'''
 def slegendre_polynomials(m):
     if m < 0:
         raise ValueError("n must be nonnegative.")
@@ -75,12 +72,43 @@ def slegendre_polynomials(m):
     elif m == 20:
         return 6.40312423743285 - 2689.3121797218*x + 281033.122780928*x**2 -    12927523.6479227*x**3 + 329651853.022028*x**4 - 5274429648.35245*x**5 +    57139654523.8182*x**6 - 440791620612.312*x**7 + 2507002342232.52*x**8 -    10770824877739.7*x**9 + 35543722096541.1*x**10 - 91062428511799.6*x**11  + 182124857023599*x**12 - 284502735232131*x**13 + 345467607067588*x**14  - 322436433263082*x**15 + 226713117138105*x**16 - 116102219157230*x**17  + 40850780814580.9*x**18 - 8826484497333.28*x**19 +   882648449733.327*x**20 
 
+
+'''
+lst_slegendre:
+
+Description:
+Return the first m+1 normalized shifted Legendre polynomials according to the given m.
+
+Arguments:
+
+m	
+The size of the basis to be considered.
+
+Value:
+The first m+1 normalized shifted Legendre polynomials.
+'''
+
 def lst_slegendre(m):
     lst = []
     for i in range(m+1):
         lst.append(slegendre_polynomials(i))
     return (lst)
+'''
+Legj:
+Description:
+Evaluates the a basis of normalized shifted Legendre polynomials over a specified data vector.
 
+Arguments:
+u	
+Data vector on which the polynomials are to be evaluated.
+
+m	
+The size of the basis to be considered.
+
+Value:
+Numerical values of the first m normalized shifted Legendre polynomials.
+
+'''
 def Legj(u,m):
     u=np.array(u)
     m = min(len(np.unique(u))-1, m)
@@ -90,6 +118,28 @@ def Legj(u,m):
         for j in range(len(u)):
             a[i][j]=lambdify(x,leg_js[i])(u[j])
     return np.transpose(a[1:,:])
+'''
+denoise:
+
+Description:
+Selects the largest coefficients according to the AIC criterion
+
+Arguments:
+LP	
+Original vector of coefficients estimates. See details.
+
+n	
+The dimension of the sample on which the estimates in LP have been obtained.
+
+method	
+either “AIC” or “BIC”. See details.
+
+Details:
+Give a vector of M coefficient estimates, the largest are selected according to the AIC or BIC criterion as described in Algeri, 2019 and Mukhopadhyay, 2017.
+
+Value:
+Selected coefficient estimates.
+'''
 
 def denoise(LP, n, method):
     LP = np.array(LP)
@@ -109,6 +159,38 @@ def denoise(LP, n, method):
     LPsel[LP**2<LP2s[np.argmax(criterion)]] = 0
     return LPsel
 
+
+
+'''
+BestM
+
+Description:
+Computes the deviance p-values considering different sizes of the polynomial basis and selects the one for which the deviance p-value is the smallest.
+
+Arguments:
+data	
+A vector of data.
+
+g
+The postulated model from which we want to assess if deviations occur.
+
+Mmax
+The maximum size of the polynomial basis from which a suitable value M is selected (the default is 20). See details.
+
+rg
+Range of the data/ search region considered.
+
+Value:
+pvals	
+The deviance test p-values obtained for each values of M (from 1 to Mmax) considered.
+
+minp	
+The minimium value of the deviance p-values observed.
+
+Msel	
+The value of M at which the minimum is achieved.
+'''
+
 def BestM(data, g, Mmax=20, rg=[-10**7,10**7]):
     data = np.array(data)
     G = lambda c: integrate.quad(g, rg[0], c)[0]
@@ -123,13 +205,34 @@ def BestM(data, g, Mmax=20, rg=[-10**7,10**7]):
         LP[i] = np.sum(S[:,i])/len(S[:,i])
     for m in range(Mmax):
         deviance = n * np.sum(LP[0:m+1]**2)
-        pval[m] = 1 - stats.chi2.cdf(deviance, m+1)
+        pval[m] = stats.chi2.sf(deviance, m+1)
     out = {}
     out["pvals"] = pval
     out["minp"] = np.min(pval)
     out["Msel"] = np.argmin(pval)+1
     return out
+'''
+c_alpha2:
+    
+Description
+Approximates the quantiles of the supremum of the comparison density estimator using tube formulae and assuming that $H_0$ is true.
 
+Arguments:
+M	
+The size of the polynomial basis used to estimate the comparison density.
+
+IDs	
+The IDs of the polynomial terms to be used out of the M considered.
+
+alpha	
+Desired significance level.
+
+c_interval	
+Lower and upper bounds for the quantile being computed.
+
+Value:
+Approximated quantile of order 1-alpha of the supremum of the comparison density estimator.
+'''
 def c_alpha2(M, IDs, alpha=0.05, c_interval=[1,10]):
     sleg_f=lst_slegendre(M) 
     Der=sleg_f
@@ -145,11 +248,89 @@ def c_alpha2(M, IDs, alpha=0.05, c_interval=[1,10]):
     whichC = lambda C: 2*(1-stats.norm.cdf(C,0,1))+k0*np.exp(-C**2/2)/np.pi-alpha
     Calp= root(whichC, c_interval[0], c_interval[1])
     return Calp
+'''
+dhatL2
+Description:
+Construction of CD-plot and adjusted deviance test. The confidence bands are also adjusted for post-selection inference.
 
-def dhatL2(data, g, M=6, Mmax=None, smooth=True, 
+Arguments:
+data	
+A vector of data. See details.
+
+g	
+The postulated model from which we want to assess if deviations occur.
+
+M	
+The desired size of the polynomial basis to be used.
+
+Mmax	
+the maximum size of the polynomial basis from which M was selected (the default is 20). See details.
+
+smooth	
+A logical argument indicating if a denoised solution should be implemented. The default is FALSE, meaning that the full solution should be implemented. See details.
+
+criterion	
+If smooth=TRUE, the criterion with respect to which the denoising process should be implemented. The two possibilities are "AIC" or "BIC". See details.
+
+hist.u	
+A logical argument indicating if the CD-plot should be displayed or not. The default is TRUE.
+
+breaks	
+If hist.u=TRUE, the number of breaks of the CD-plot. The default is 20.
+
+ylim	
+If hist.u=TRUE, the range of the y-axis of the CD-plot.
+
+range	
+Range of the data/ search region considered.
+
+sigma	
+The significance level (in sigmas) with respect to which the confidence bands should be constructed. See details.
+
+Value:
+Deviance	
+Value of the deviance test statistic.
+
+Dev_pvalue	
+Unadjusted p-value of the deviance test.
+
+Dev_adj_pvalue	
+Bonferroni adjusted p-value of the deviance test.
+
+kstar	
+Number of coefficients selected by the denoising process. If smooth=FALSE, kstar=M.
+
+dhat	
+Function corresponding to the estimated comparison density in the u domain.
+
+dhat.x	
+Function corresponding to the estimated comparison density in the x domain.
+
+SE	
+Function corresponding to the estimated standard errors of the comparison density in the u domain.
+
+LBf1	
+Function corresponding to the lower bound of the confidence bands under in u domain.
+
+UBf1	
+Function corresponding to the upper bound of the confidence bands in u domain.
+
+f	
+Function corresponding to the estimated density of the data.
+
+u	
+Vector of values corresponding to the cdf of the model specified in g evaluated at the vector data.
+
+LP	
+Estimates of the coefficients.
+
+G	
+Cumulative density function of the postulated model specified in the argument g.
+'''
+def dhatL2(data, g, M=6, Mmax=None, smooth=False, 
            method="AIC", hist_u=True, 
-           bins=20, ylim=[0,2.5], rg=[-10**7,10**7], sigma=2):
-    G = lambda y: integrate.quad(g, rg[0], y, limit=500)[0]
+           breaks=20, ylim=[0,2.5], rg=[-10**7,10**7], sigma=2):
+    G = lambda y: integrate.quad(g, rg[0], y, limit=200)[0]
     n = len(data)
     u = np.zeros(n)
     for i in range(n):
@@ -204,7 +385,7 @@ def dhatL2(data, g, M=6, Mmax=None, smooth=True,
     UBf1 = lambda u: 1+qa*SEdhatH0(u)
     SE = lambda u: SEdhat(u)
     deviance = n*np.sum(LP**2)
-    pval = 1 - stats.chi2.cdf(deviance, np.sum(LP!=0))
+    pval = stats.chi2.sf(deviance, np.sum(LP!=0))
     adj_pval = None
     if Mmax>1 and smooth is False:
         adj_pval = pval*Mmax
@@ -214,7 +395,7 @@ def dhatL2(data, g, M=6, Mmax=None, smooth=True,
         ones=np.repeat(1,len(uu))
         sns.set_style('whitegrid')
         fig, ax = plt.subplots(figsize=(14, 7))
-        ax=sns.distplot(u,bins=bins,kde=False,norm_hist=True, ax=ax)
+        ax=sns.distplot(u,bins=breaks,kde=False,norm_hist=True, ax=ax)
         ax.plot(uu,ones,color='red',linestyle='dashed')
         ax.plot(uu,dhat(uu),color="#1E90FF")
         poly=Polygon(np.stack((np.append(uu,uu[::-1]), np.append(LBf1(uu), UBf1(uu)[::-1])),axis=-1),closed=False,color=(0.1,0,0.03333,0.1))
