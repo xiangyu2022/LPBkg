@@ -25,7 +25,7 @@ from LPBkg.detc import BestM, dhatL2
 
 Now everything is ready to start our analysis. We consider the Fermi-LAT example described in Section VI of the manuscript *Algeri(2019)*.
 
-The datafiles are available in the folder [[R code and tutorial](https://drive.google.com/file/d/1nikTqVCR-VIxkOL7F6OQAXYlmeoK-AST/view)] and can be loaded as follows:
+The datafiles are available in the folder [[data](https://drive.google.com/open?id=1FYfqDpo4O-CHqVMOaQsTcTu9fbFeca62)] and can be loaded as follows:
 
 ```bash
 import numpy as np
@@ -50,9 +50,9 @@ We can check the number of observations in each sample and plot their histograms
 len(cal)
 len(bkg)
 len(sig)
-sns.displot(cal, kde=True, norm_hist= True)
-sns.displot(bkg, kde=True, norm_hist= True)
-sns.displot(sig, kde=True, norm_hist= True)
+sns.distplot(cal, kde=True, norm_hist= True)
+sns.distplot(bkg, kde=True, norm_hist= True)
+sns.distplot(sig, kde=True, norm_hist= True)
 ```
 
 
