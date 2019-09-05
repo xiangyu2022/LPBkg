@@ -29,8 +29,10 @@ The datafiles are available in the folder [[data](https://drive.google.com/open?
 
 ```bash
 import numpy as np
+from scipy import stats
 import seaborn as sns
 import matplotlib.pyplot as plt
+
 ca=np.loadtxt('L:\\R code and tutorial\\source_free.txt',dtype=str)[:,1:].astype(float)
 bk=np.loadtxt('L:\\R code and tutorial\\background.txt',dtype=str)[:,1:].astype(float)
 si=np.loadtxt('L:\\R code and tutorial\\signal.txt',dtype=str)[:,1:].astype(float)
