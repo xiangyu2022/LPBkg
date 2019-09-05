@@ -6,7 +6,7 @@ Further details and theory about the algorithm can be found here [[PDF](https://
 
 For more technial problems, please contact the package author Xiangyu Zhang at zhan6004@umn.edu.
 
-For more theoretical references, please contact the paper author Sara Algeri at salgeri@umn.edu
+For more theoretical references, please contact the paper author Sara Algeri at salgeri@umn.edu.
 
 ## A quick Setup Guide
 
