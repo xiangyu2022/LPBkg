@@ -73,7 +73,7 @@ def powerlaw(y):
 # where the value 1.3590681192057597 is calculated by minimizing function mil with respect to the parameter ''d'' using ''Brent optimization''
 ```
 
-Let's chek how our postulated model fits the data
+Let's check how our postulated model fits the data
 
 ```dash
 fig, ax = plt.subplots(figsize=(14, 7))
