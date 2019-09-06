@@ -1,10 +1,10 @@
 # The 'LPBkg' Python package
 
-This package provides a python implemention for the **New Signals Detection Under Background Mismodelling** (LPBkg) algorithm, as proposed by **S. Algeri** in the **"Detecting new signals under background mismodelling", Submitted. arXiv:1906.06615**. LPBkg algorithm provides a unified statistical strategy to perform modelling, estimation, inference, and signal characterization under background mismodelling. The method proposed allows to incorporate the (partial) scientific knowledge available on the background distribution and provides a data-updated version of it in a **purely nonparametric fashion** without requiring the specification of prior distributions.
+This package provides a python implementation for the **New Signals Detection Under Background Mismodelling** (LPBkg) algorithm, as proposed by **S. Algeri** in the **"Detecting new signals under background mismodelling", arXiv:1906.06615**. LPBkg algorithm provides a unified statistical strategy to perform modeling, estimation, inference, and signal characterization under background mismodeling. The method proposed allows to incorporate the (partial) scientific knowledge available on the background distribution and provides a data-updated version of it in a **purely nonparametric fashion** without requiring the specification of prior distributions.
 
 Further details and theory about the algorithm can be found here [[PDF](https://arxiv.org/pdf/1906.06615.pdf)]
 
-For more technial problems, please contact the package author Xiangyu Zhang at zhan6004@umn.edu.
+For more technical problems, please contact the package author Xiangyu Zhang at zhan6004@umn.edu.
 
 For more theoretical references, please contact the paper author Sara Algeri at salgeri@umn.edu.
 
@@ -25,7 +25,7 @@ from LPBkg.detc import BestM, dhatL2
 
 Now everything is ready to start our analysis. We consider the Fermi-LAT example described in Section VI of the manuscript *Algeri(2019)*.
 
-The datafiles are available in the folder [[data](https://drive.google.com/open?id=1FYfqDpo4O-CHqVMOaQsTcTu9fbFeca62)] and can be loaded as follows:
+The data files are available in the folder [[data](https://drive.google.com/open?id=1FYfqDpo4O-CHqVMOaQsTcTu9fbFeca62)] and can be loaded as follows:
 
 ```python
 import numpy as np
@@ -86,7 +86,7 @@ ax.set_ybound(lower=0, upper=0.8)
 ax.figure
 ```
 
-In order to assess if g_b is a good model for our background distribution we proceed considering our comparison-density estimator and respective inference. 
+In order to assess if g_b is a good model for our background distribution, we proceed considering our comparison-density estimator and respective inference. 
 
 ## Choice of M
 
@@ -94,13 +94,13 @@ First of all, we can select a suitable value of M (i.e., the number of polynomia
 ```python
 BestM(data,g, Mmax=20,rg=[-10**7,10**7])
 ```
-The arguments of this function are the following:
+The arguments for this function are the following:
 - data: the data vector in the original scale. This corresponds to the source-free sample in the background calibration phase and to the physics sample in the signal search phase.
 - g: the postulated model from which we want to assess if deviations occur.
 - Mmax: the maximum size of the polynomial basis from which a suitable value M is selected (the default is 20).
-- rg: range of the data considered. This corresponds to the interval on which the search is conducted.
+- rg: the range of the data considered. This corresponds to the interval on which the search is conducted.
 
-Let's now see what we obtain when applying this function to our source-free sample, while considering the best our fitted power law as postulated background model.
+Let's now see what we obtain when applying this function to our source-free sample, while considering our fitted powerlaw as the postulated background model.
 
 ```python
 BestM(data=cal,g=powerlaw, Mmax=20,rg=[1,35])
@@ -114,7 +114,7 @@ dhatL2(data,g, M=6, Mmax=1,smooth=FALSE,criterion="AIC",
        hist.u=TRUE,breaks=20,ylim=[0, 2.5],rg=[-10**7, 10**7],sigma=2)
 ```
 
-The arguments of this function are the following:
+The arguments for this function are the following:
 - data: the data vector in the original scale. This corresponds to the source-free sample in the background calibration phase and to the physics sample in the signal search phase.
 - g: the postulated model from which we want to assess if deviations occur.
 - M: the size of the basis for the full solution, i.e., the estimator dhat(u;G,F).
@@ -138,7 +138,7 @@ comp['Deviance']
 comp.density['Dev_pvalue']
 comp.density['Dev_adj_pvalue']
 ```
-Furthermore, we can create new functions corresponding to the estimated comparison density in both the u and the x scale and plot them in order to understand where the most prominent departures occur.
+Furthermore, we can create new functions corresponding to the estimated comparison density in both u and x scale and plot them in order to understand where the most prominent departures occur.
 
 ```python
 # Estimated comparison density in u scale.
@@ -189,27 +189,27 @@ ax.set_title('Source free sample and calibrated background density')
 ax.figure
 ```
   
-There are several other values and function which are generated by the dhatL2 function and are summarized below. To exctract them, it is sufficient to use the ['their name'] symbol.(e.g., comp['f'], comp['u'], etc. ).
+There are several other values and function which are generated by the dhatL2 function and are summarized below. To extract them, it is sufficient to use the ['their name'] symbol.(e.g., comp['f'], comp['u'], etc. ).
 
 - Deviance: value of the deviance test statistic.
 - Dev_pvalue: unadjusted p-value of the deviance test. 
 - Dev_adj_pvalue: adjusted p-values of the deviance test. If smooth=FALSE, it is computed as in formula (19) in **Algeri  (2019)**. If smooth=TRUE, it is computed as in formula (28) in **Algeri  (2019)**. 
 - kstar: number of coefficients selected by the denoising process. If smooth=FALSE returns kstar=M.
-- dhat: function corresponding to the estimated comparison density in the u scale.
-- dhat_x: function corresponding to the estimated comparison density in the x scale.
-- SE: function corresponding to the estimated standard errors of the comparison density in the u scale.
+- dhat: function corresponding to the estimated comparison density in u scale.
+- dhat_x: function corresponding to the estimated comparison density in x scale.
+- SE: function corresponding to the estimated standard errors of the comparison density in u scale.
 - LBf1: function corresponding to the lower bound of the confidence bands under H_0 in u scale.
 - UBf1: function corresponding to the upper bound of the confidence bands under H_0 in u scale.
 - f: function corresponding to the estimated density of the data and obtained as in equation (10)
 in **Algeri  (2019)**.
 - u: values u_i=G(x_i),with i=1,...,n, on which the comparison density has been estimated.
-- LP: estimates of the LP_j coefficients. If smooth=TRUE, non-zero values corresponds to the k^M estimates in the denoised solution d^(u;G,F)
+- LP: estimates of the LP_j coefficients. If smooth=TRUE, non-zero values correspond to the k^M estimates in the denoised solution d^(u;G,F)
 - G: cumulative density function of the postulated model specified in the argument g.
 
 
 ## Signal search
 
-We can assess if our physics sample provides evidence in favour of the signal using again the functions bestM and dhatL2. 
+We can assess if our physics sample provides evidence in favor of the signal using again the functions bestM and dhatL2. 
 
 Below we work on the signal sample and we compare its distribution with the background distribution calibrated as describe in the previous section and which we called fb_hat. This is the equivalent of f^_b(x) in (14) of **Algeri (2019)**.  
 
@@ -233,7 +233,7 @@ We select the value M which leads to the strongest significance. Notice that now
 ```python
 BestM(data=sig,g=fb_hat, Mmax=20, rg=[1,35])
 ```
-The selection process based on the deviance test suggests M=3, which we now use to to estimate the comparison density using the dhatL2 function.
+The selection process based on the deviance test suggests M=3, which we now use to estimate the comparison density using the dhatL2 function.
 
 ```python
 comp_sig=dhatL2(data=sig,g=fb_hat, M=3, Mmax=20, smooth=False,hist_u=True,
@@ -275,9 +275,9 @@ pvalue2
 sigma_significance2
 
 ```
-Since no selection process was considered, no adjusted p-value is returned and the unandjusted p-value leads to a
+Since no selection process was considered, no adjusted p-value is returned and the unjusted p-value leads to a
 3.745 sigma significance. This is larger than the one we obtained before, but we somehow cheated as we have ignored the selection process!
-Notice that, that despite no correction was applied the confidence bands are much larger than before but the estimated comparison density is somehow more concentrated around u=0.7. That is simply because a larger basis leads to a reduction of the bias and an increment of the variance. But what do we get if we implement  a denoising process?
+Notice that, that despite no correction was applied the confidence bands are much larger than before but the estimated comparison density is somehow more concentrated around u=0.7. That is simply because a larger basis leads to a reduction of the bias and an increment of the variance. But what do we get if we implement a denoising process?
 To do so we only need to specify smooth=TRUE and select a denoising criterion between AIC or BIC. Just for the sake of consistency with  **Algeri (2019)**, we choose the AIC criterion.
 
 ```python
@@ -296,7 +296,7 @@ d^(u;G,F). However, the significance of the deviance test has reduced (3.520sigm
 
 ## References
 
-Algeri S. (2019). Detecting new signals under background mismodelling. **Submitted.** arXiv:1906.06615
+Algeri S. (2019). Detecting new signals under background mismodelling. **arXiv:1906.06615**
 
 ## License
 
