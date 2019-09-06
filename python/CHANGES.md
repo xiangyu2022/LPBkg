@@ -1,10 +1,6 @@
 # Changelog
 
-## [0.0.1 -> 0.1.1] - 2019-09-05
-- Fixes some bugs
-- Update the README file
-
-## [0.0.1 -> 0.1.0] - 2019-09-05
+## [0.1.0 -> 0.1.1] - 2019-09-05
 - Fixes some bugs
 - Update the README file
 
