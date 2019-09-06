@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.0.5 -> 0.0.6] - 2019-09-05
+### Added
+- Update the README file
+- Fixes some bugs
+
 ## [0.0.4 -> 0.0.5] - 2019-09-05
 ### Added
 - Update the README file
