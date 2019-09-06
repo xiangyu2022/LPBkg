@@ -296,7 +296,7 @@ d^(u;G,F). However, the significance of the deviance test has reduced (3.520sigm
 
 ## References
 
-Algeri S. (2019). Detecting new signals under background mismodelling. **arXiv:1906.06615**
+Algeri S. (2019). Detecting new signals under background mismodelling. [[arXiv:1906.06615](https://arxiv.org/pdf/1906.06615.pdf)]
 
 ## License
 
