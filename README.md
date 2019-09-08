@@ -4,7 +4,7 @@ This package provides an implementation for the New Signals Detection Under Back
 ## Available Implementations
 
 At this time, the 'LPBkg' is available right out of the box to the general public for personal use in the following programming languages:
-- [R] - [Code and Tutorial](https://drive.google.com/file/d/1nikTqVCR-VIxkOL7F6OQAXYlmeoK-AST/view)
+- [R(To be uploaded to CRAN] - [Code and Tutorial](https://drive.google.com/file/d/1nikTqVCR-VIxkOL7F6OQAXYlmeoK-AST/view)
 - [Python](https://pypi.org/project/LPBkg/) - [User Guide](https://github.com/Yorkee2018/LPBkg/tree/master/python)
 
 ## References
