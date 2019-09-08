@@ -1,7 +1,7 @@
 # The "LPBkg" Package
 This package provides an implementation for the New Signals Detection Under Background Mismodelling (LPBkg) algorithm, as proposed by S. Algeri in the **"Detecting new signals under background mismodelling", arXiv:1906.06615.** LPBkg algorithm provides a unified statistical strategy to perform modeling, estimation, inference, and signal characterization under background mismodeling. The method proposed allows to incorporate the (partial) scientific knowledge available on the background distribution and provides a data-updated version of it in a purely nonparametric fashion without requiring the specification of prior distributions.
 
-Further details and theory about the algorithm can be found here [PDF](https://arxiv.org/pdf/1906.06615.pdf)
+Further details and theory about the algorithm can be found here [PDF](https://arxiv.org/pdf/1906.06615.pdf) or [VIDEO](https://drive.google.com/file/d/1WhD5FnCyf2QtZP5I8crm6ZBzh7CjXiHL/view).
 
 For more technical problems, please contact the package author Xiangyu Zhang at zhan6004@umn.edu.
 
