@@ -4,7 +4,7 @@ The LPBkg package provides a Python implementation for the **detection of new si
 
 Further details and theory about the algorithm can be found in the **"Detecting new signals under background mismodelling",** [[arXiv:1906.06615](https://arxiv.org/pdf/1906.06615.pdf)].
 
-For more technical problems, please contact the author of thepackage Xiangyu Zhang at zhan6004@umn.edu.
+For more technical problems, please contact the author of the package Xiangyu Zhang at zhan6004@umn.edu.
 
 For more theoretical references, please contact the author of the paper Sara Algeri at salgeri@umn.edu.
 
