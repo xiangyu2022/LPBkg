@@ -335,7 +335,7 @@ def dhatL2(data, g, M=6, Mmax=None, smooth=False,
     u = np.zeros(n)
     for i in range(n):
         u[i] = G(data[i])
-    xx = np.arange(rg[0],rg[1],0.05)
+    xx = np.arange(rg[0],rg[1],0.001)
     uu = np.zeros(len(xx))
     for i in range(len(xx)):
         uu[i] = G(xx[i])
